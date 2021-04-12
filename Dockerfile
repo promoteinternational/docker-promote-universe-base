@@ -13,7 +13,8 @@ RUN wget -q https://archive.promoteapp.net/zeromq-4.0.4.tar.gz -O /src/zeromq-4.
   && tar -xf /src/zeromq-4.0.4.tar.gz \
   && tar -xf /src/libsodium-1.0.0.tar.gz \
   && cd /src/libsodium-1.0.0 && ./configure && make install \ 
-  && cd /src/zeromq-4.0.4 && ./configure && make install
+  && cd /src/zeromq-4.0.4 && ./configure && make install \
+  && rm -rf /src/libsodium-1.0.0* /src/zeromq-4.0.4*
 
 ## alt 3, prebuilt debian, this doesn't work due to alpine musl issue
 #RUN wget -q https://archive.promoteapp.net/libsodium-1.0.0-deb7-amd64.tar.gz -O /src/libsodium.tar.gz \
