@@ -30,5 +30,7 @@ RUN wget -q https://archive.promoteapp.net/zeromq-4.0.4.tar.gz -O /src/zeromq-4.
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.8.0/wait /wait
 RUN chmod +x /wait
 
+RUN gem install bundler -v=2.2.28
+
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
