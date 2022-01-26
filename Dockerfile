@@ -1,4 +1,4 @@
-FROM ruby:2.7.2-alpine
+FROM ruby:3.1.0-alpine
 RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info
 RUN mkdir -p /src
 WORKDIR /src
