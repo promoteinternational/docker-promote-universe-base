@@ -1,5 +1,5 @@
-FROM ruby:2.7.2-alpine
-RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info
+FROM ruby:2.7.5-alpine
+RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info libxml2-dev libxslt-dev
 RUN mkdir -p /src
 WORKDIR /src
 
@@ -12,9 +12,18 @@ RUN wget -q https://archive.promoteapp.net/zeromq-4.0.4.tar.gz -O /src/zeromq-4.
   && wget -q https://archive.promoteapp.net/libsodium-1.0.0.tar.gz -O /src/libsodium-1.0.0.tar.gz \
   && tar -xf /src/zeromq-4.0.4.tar.gz \
   && tar -xf /src/libsodium-1.0.0.tar.gz \
-  && cd /src/libsodium-1.0.0 && ./configure && make install \ 
-  && cd /src/zeromq-4.0.4 && ./configure && make install \
+  && cd /src/libsodium-1.0.0 && ./configure && make -j 8 install \
+  && cd /src/zeromq-4.0.4 && ./configure && make -j 8 install \
   && rm -rf /src/libsodium-1.0.0* /src/zeromq-4.0.4*
+
+RUN apk add --no-cache --update cargo git \
+  && wget -q https://github.com/mozilla/geckodriver/archive/refs/tags/v0.27.0.tar.gz -O /src/geckodriver-0.27.0.tar.gz \
+  && tar -xvf /src/geckodriver-0.27.0.tar.gz \
+  && ls /src \
+  && cd /src/geckodriver-0.27.0 \
+  && cargo install --path . --bin geckodriver --root /usr \
+  && rm -rf /src/geckodriver* /root/.cargo \
+  && apk del cargo
 
 ## alt 3, prebuilt debian, this doesn't work due to alpine musl issue
 #RUN wget -q https://archive.promoteapp.net/libsodium-1.0.0-deb7-amd64.tar.gz -O /src/libsodium.tar.gz \
