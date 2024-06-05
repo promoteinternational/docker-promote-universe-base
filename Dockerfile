@@ -45,5 +45,7 @@ RUN apk add --no-cache --update cargo git \
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
 RUN chmod +x /wait
 
+RUN gem install bundler -v=2.5.11
+
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
