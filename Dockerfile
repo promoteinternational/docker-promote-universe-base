@@ -1,5 +1,5 @@
-FROM ruby:3.2.1-alpine3.17
-RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info libxml2-dev libxslt-dev gcompat less zeromq zeromq-dev
+FROM ruby:3.3.2-alpine3.20
+RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info libxml2-dev libxslt-dev gcompat less zeromq zeromq-dev geckodriver
 RUN mkdir -p /src
 WORKDIR /src
 
@@ -23,22 +23,16 @@ WORKDIR /src
 #  && ldconfig /usr/local \
 #  && rm /src/zeromq.tar.gz /src/libsodium.tar.gz
 
-# geckodriver is only available prebuilt in alpine edge testing, might be included in alpine v3.18
-# option 1: fast + weird, 35sec, upgrade to alpine edge and use prebuilt 0.32.0 (this would affect all other packages as well)
-#RUN sed -i -e 's/v3\.../edge/g' /etc/apk/repositories \
-#  && echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-#  && apk update \
-#  && apk upgrade --available \
-#  && apk add geckodriver
+# option 1: prebuilt, 0.34 available in alpine 3.20
 # option 2: compile ourself
-RUN apk add --no-cache --update cargo git \
-  && wget -q https://github.com/mozilla/geckodriver/archive/refs/tags/v0.32.0.tar.gz -O /src/geckodriver-0.32.0.tar.gz \
-  && tar -xvf /src/geckodriver-0.32.0.tar.gz \
-  && ls /src \
-  && cd /src/geckodriver-0.32.0 \
-  && cargo install --path . --bin geckodriver --root /usr \
-  && rm -rf /src/geckodriver* /root/.cargo \
-  && apk del cargo
+#RUN apk add --no-cache --update cargo git \
+#  && wget -q https://github.com/mozilla/geckodriver/archive/refs/tags/v0.32.0.tar.gz -O /src/geckodriver-0.32.0.tar.gz \
+#  && tar -xvf /src/geckodriver-0.32.0.tar.gz \
+#  && ls /src \
+#  && cd /src/geckodriver-0.32.0 \
+#  && cargo install --path . --bin geckodriver --root /usr \
+#  && rm -rf /src/geckodriver* /root/.cargo \
+#  && apk del cargo
 
 # Used for waiting on runtime dependencies
 # For example db:migrate requires postgres server
