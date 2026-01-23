@@ -1,4 +1,4 @@
-FROM ruby:3.3.2-alpine3.20
+FROM ruby:3.4.8-alpine3.23
 RUN apk add --no-cache --update build-base nmap-ncat bash postgresql-dev tzdata shared-mime-info libxml2-dev libxslt-dev gcompat less zeromq zeromq-dev geckodriver
 RUN mkdir -p /src
 WORKDIR /src
@@ -36,10 +36,10 @@ WORKDIR /src
 
 # Used for waiting on runtime dependencies
 # For example db:migrate requires postgres server
-ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.12.1/wait /wait
 RUN chmod +x /wait
 
-RUN gem install bundler -v=2.5.11
+RUN gem install bundler -v=2.6.9
 
 COPY entrypoint.sh /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
